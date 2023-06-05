@@ -9,7 +9,7 @@
     <version>3.0.0</version>
     <packaging>jar</packaging>
 
-    <name>rpg-regen-rework</name>
+    <name>RPGRegen</name>
 
     <properties>
         <java.version>15</java.version>
@@ -17,7 +17,9 @@
         <main-class>com.gilles_m.rpg_regen.RPGRegen</main-class>
         <spigot.version>1.19.4-R0.1-SNAPSHOT</spigot.version>
         <lombok.version>1.18.26</lombok.version>
+        <jackson.version>2.14.2</jackson.version>
         <format-lib.version>1.0.0</format-lib.version>
+        <file-utils.version>1.0.0</file-utils.version>
     </properties>
 
     <repositories>
@@ -25,6 +27,7 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
@@ -47,9 +50,21 @@
         </dependency>
 
         <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.spigot_gillesm</groupId>
             <artifactId>format-lib</artifactId>
             <version>${format-lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.spigot_gillesm</groupId>
+            <artifactId>file-utils</artifactId>
+            <version>${file-utils.version}</version>
         </dependency>
     </dependencies>
 
