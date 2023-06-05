@@ -1,0 +1,6 @@
+# The time in seconds between each regen tick
+period: 2.0
+# The amount of health gained each regen tick
+amount: 1.0
+# Whether the food will impact the regen rate
+use-food-level: true

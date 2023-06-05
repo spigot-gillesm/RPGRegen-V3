@@ -21,6 +21,7 @@ public class RegeneratorManager {
      * @param player the player
      */
     public void start(final Player player) {
+        final ConfigurationHolder configuration = RPGRegen.getInstance().getConfigurationHolder();
         registeredRegenerators.stream()
                 .filter(regenerator -> regenerator.getPlayer().equals(player))
                 .findFirst()
@@ -28,7 +29,11 @@ public class RegeneratorManager {
                 .ifPresentOrElse(
                         PlayerRegenerator::start,
                         () -> {
+                            //Create the regenerator using the config values
                             final var regenerator = PlayerRegenerator.newBuilder(player)
+                                    .period(configuration.getPeriod())
+                                    .amount(configuration.getAmount())
+                                    .useFoodLevel(configuration.isUseFoodLevel())
                                     .build();
                             regenerator.start();
                             registeredRegenerators.add(regenerator);
