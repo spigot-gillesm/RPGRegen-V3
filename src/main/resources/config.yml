@@ -4,3 +4,5 @@ period: 2.0
 amount: 1.0
 # Whether the food will impact the regen rate
 use-food-level: true
+# How much time in seconds a player remains in combat
+combat-duration: 5.0

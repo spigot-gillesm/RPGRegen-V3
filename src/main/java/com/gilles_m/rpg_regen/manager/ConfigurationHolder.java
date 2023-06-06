@@ -1,4 +1,4 @@
-package com.gilles_m.rpg_regen;
+package com.gilles_m.rpg_regen.manager;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,11 +16,11 @@ public class ConfigurationHolder {
     private float amount = 1;
 
     @Getter
+    @JsonProperty("combat-duration")
+    private float combatDuration = 5;
+
+    @Getter
     @JsonProperty("use-food-level")
     private boolean useFoodLevel = true;
-
-    ConfigurationHolder() {
-        //Empty protected constructor for Jackson
-    }
 
 }

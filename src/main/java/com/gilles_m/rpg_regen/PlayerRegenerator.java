@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class PlayerRegenerator {
 
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     private final Player player;
 
     private final float period;
@@ -52,18 +52,14 @@ public class PlayerRegenerator {
         //Stop any already running runnable
         stop();
         task = new BukkitRunnable() {
-
             @Override
             public void run() {
                 if(player == null || !Bukkit.getServer().getOnlinePlayers().contains(player)) {
                     cancel();
                     return;
                 }
-                if(!CooldownHolder.getInstance().isInCooldown(player)) {
-                    heal();
-                }
+                heal();
             }
-
         }.runTaskTimer(RPGRegen.getInstance(), 0, (long) period * 20);
     }
 

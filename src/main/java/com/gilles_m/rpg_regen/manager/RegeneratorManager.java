@@ -1,5 +1,7 @@
-package com.gilles_m.rpg_regen;
+package com.gilles_m.rpg_regen.manager;
 
+import com.gilles_m.rpg_regen.PlayerRegenerator;
+import com.gilles_m.rpg_regen.RPGRegen;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
