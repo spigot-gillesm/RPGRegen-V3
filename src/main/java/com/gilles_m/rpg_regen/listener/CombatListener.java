@@ -16,11 +16,9 @@ public class CombatListener implements Listener {
     @EventHandler
     public void onHit(final EntityDamageByEntityEvent event) {
         Player player = null;
-        boolean inCombat = false;
 
         //Check if a player hits an entity
         if(event.getDamager() instanceof Player) {
-            inCombat = true;
             player = (Player) event.getDamager();
         }
         //Check if a player has been hit by another entity
@@ -43,7 +41,7 @@ public class CombatListener implements Listener {
             }
         }
         //Check if a player is effectively in combat
-        if(player != null && inCombat) {
+        if(player != null) {
             final PlayerEnterCombatEvent playerEnterCombatEvent = new PlayerEnterCombatEvent(player, event.getCause());
             Bukkit.getServer().getPluginManager().callEvent(playerEnterCombatEvent);
 
