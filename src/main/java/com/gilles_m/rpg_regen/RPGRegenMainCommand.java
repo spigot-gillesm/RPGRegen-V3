@@ -1,5 +1,6 @@
 package com.gilles_m.rpg_regen;
 
+import com.gilles_m.rpg_regen.manager.RegeneratorManager;
 import com.github.spigot_gillesm.command_lib.MainCommand;
 import com.github.spigot_gillesm.command_lib.SimpleCommand;
 import com.github.spigot_gillesm.format_lib.Formatter;

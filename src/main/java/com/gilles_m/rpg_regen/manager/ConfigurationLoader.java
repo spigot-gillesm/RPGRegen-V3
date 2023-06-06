@@ -1,7 +1,8 @@
-package com.gilles_m.rpg_regen;
+package com.gilles_m.rpg_regen.manager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.gilles_m.rpg_regen.RPGRegen;
 import com.github.spigot_gillesm.file_utils.FileUtils;
 
 import java.io.IOException;
