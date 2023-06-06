@@ -1,5 +1,6 @@
 package com.gilles_m.rpg_regen;
 
+import com.github.spigot_gillesm.command_lib.CommandLib;
 import com.github.spigot_gillesm.file_utils.FileUtils;
 import com.github.spigot_gillesm.format_lib.Formatter;
 import lombok.Getter;
@@ -22,13 +23,21 @@ public final class RPGRegen extends JavaPlugin {
         instance = pluginInstance;
         Formatter.PREFIX = "&f[&cRPG&aRegen&f]";
         FileUtils.PLUGIN_DATA_FOLDER_PATH = instance.getDataFolder().getPath();
+
+        //Initialize commands
+        CommandLib.initialize(pluginInstance);
     }
 
     @Override
     public void onEnable() {
         Formatter.info("Loading RPGRegen...");
         initialise(this);
+        loadObjects();
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        Formatter.info("&aDone!");
+    }
 
+    public void loadObjects() {
         try {
             ConfigurationLoader.getInstance().load();
         } catch (IOException e) {
@@ -36,9 +45,6 @@ public final class RPGRegen extends JavaPlugin {
             Formatter.warning("Using default configuration.");
             this.configurationHolder = new ConfigurationHolder();
         }
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-
-        Formatter.info("&aDone!");
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.gilles_m.rpg_regen;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class RegeneratorManager {
@@ -21,14 +23,12 @@ public class RegeneratorManager {
      * @param player the player
      */
     public void start(final Player player) {
-        final ConfigurationHolder configuration = RPGRegen.getInstance().getConfigurationHolder();
-        registeredRegenerators.stream()
-                .filter(regenerator -> regenerator.getPlayer().equals(player))
-                .findFirst()
+        getRegenerator(player)
                 //Check if a regenerator already exists for the player before creating one
                 .ifPresentOrElse(
                         PlayerRegenerator::start,
                         () -> {
+                            final ConfigurationHolder configuration = RPGRegen.getInstance().getConfigurationHolder();
                             //Create the regenerator using the config values
                             final var regenerator = PlayerRegenerator.newBuilder(player)
                                     .period(configuration.getPeriod())
@@ -46,10 +46,33 @@ public class RegeneratorManager {
      * @param player the player
      */
     public void stop(final Player player) {
-        registeredRegenerators.stream()
+        getRegenerator(player).ifPresent(PlayerRegenerator::stop);
+    }
+
+    /**
+     * Stop and clear existing regenerators and restart one for each online player.
+     */
+    public void reload() {
+        for(final PlayerRegenerator regenerator : registeredRegenerators) {
+            regenerator.stop();
+        }
+        registeredRegenerators.clear();
+
+        for(final Player player : Bukkit.getServer().getOnlinePlayers()) {
+            start(player);
+        }
+    }
+
+    /**
+     * Get the regenerator of the given player if one exists.
+     *
+     * @param player the player
+     * @return an optional of PlayerRegenerator
+     */
+    public Optional<PlayerRegenerator> getRegenerator(final Player player) {
+        return registeredRegenerators.stream()
                 .filter(regenerator -> regenerator.getPlayer().equals(player))
-                .findFirst()
-                .ifPresent(PlayerRegenerator::stop);
+                .findFirst();
     }
 
     public static RegeneratorManager getInstance() {

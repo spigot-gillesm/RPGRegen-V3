@@ -20,6 +20,7 @@
         <jackson.version>2.14.2</jackson.version>
         <format-lib.version>1.0.0</format-lib.version>
         <file-utils.version>1.0.0</file-utils.version>
+        <command-lib.version>1.0.0</command-lib.version>
     </properties>
 
     <repositories>
@@ -66,6 +67,12 @@
             <artifactId>file-utils</artifactId>
             <version>${file-utils.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.spigot_gillesm</groupId>
+            <artifactId>command-lib</artifactId>
+            <version>${command-lib.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,6 +102,20 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/*.MF</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
