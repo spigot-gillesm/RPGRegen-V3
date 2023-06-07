@@ -1,5 +1,6 @@
 package com.gilles_m.rpg_regen;
 
+import com.gilles_m.rpg_regen.listener.CombatListener;
 import com.gilles_m.rpg_regen.listener.PlayerListener;
 import com.gilles_m.rpg_regen.manager.ConfigurationHolder;
 import com.gilles_m.rpg_regen.manager.ConfigurationLoader;
@@ -37,13 +38,15 @@ public final class RPGRegen extends JavaPlugin {
         initialise(this);
         loadObjects();
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new CombatListener(), this);
         Formatter.info("&aDone!");
     }
 
     public void loadObjects() {
         try {
             ConfigurationLoader.getInstance().load();
-        } catch (IOException e) {
+        } catch (final IOException exception) {
+            Formatter.error(exception.getMessage());
             Formatter.warning("Could not load configurations from the config.yml file. Does the file exist in the plugin folder?");
             Formatter.warning("Using default configuration.");
             this.configurationHolder = new ConfigurationHolder();

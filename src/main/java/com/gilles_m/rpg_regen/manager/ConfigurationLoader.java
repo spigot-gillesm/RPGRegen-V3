@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.gilles_m.rpg_regen.RPGRegen;
 import com.github.spigot_gillesm.file_utils.FileUtils;
+import com.github.spigot_gillesm.format_lib.Formatter;
 
 import java.io.IOException;
 
@@ -24,12 +25,9 @@ public class ConfigurationLoader {
 
         if(FileUtils.doResourceExists(CONFIGURATION_FILE_PATH)) {
             final var file = FileUtils.getResource(CONFIGURATION_FILE_PATH);
-            //Read the content of the configuration and store it in configurationHolder variable
             configurationHolder = OBJECT_MAPPER.readValue(file, ConfigurationHolder.class);
-        } else {
-            RPGRegen.getInstance().getConfig().options().copyDefaults();
-            RPGRegen.getInstance().saveDefaultConfig();
         }
+        OBJECT_MAPPER.writeValue(FileUtils.getResource(CONFIGURATION_FILE_PATH, true), configurationHolder);
         RPGRegen.getInstance().setConfigurationHolder(configurationHolder);
     }
 
