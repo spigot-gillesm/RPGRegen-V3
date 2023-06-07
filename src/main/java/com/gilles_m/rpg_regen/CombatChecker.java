@@ -18,7 +18,7 @@ public class CombatChecker {
         this.player = player;
     }
 
-    public void start(final float delay) {
+    public void start(final double delay) {
         if(task != null) {
             task.cancel();
         }

@@ -1,31 +1,49 @@
 package com.gilles_m.rpg_regen;
 
-import lombok.AccessLevel;
+import com.gilles_m.rpg_regen.manager.ConfigurationHolder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.Set;
 
 public class PlayerRegenerator {
 
     @Getter
     private final Player player;
 
-    private final float period;
+    private final double period;
 
-    private final float amount;
+    private final double amount;
 
     private final boolean useFoodLevel;
 
+    private final int bonusLevelInterval;
+
+    private final double bonusPerLevelInterval;
+
+    private final boolean replaceMinecraftSystem;
+
+    private final Set<String> whitelistedWorlds;
+
+    private final Set<String> blacklistedWorlds;
+
     private BukkitTask task;
 
-    private PlayerRegenerator(final Builder builder) {
-        this.player = builder.player;
-        this.period = builder.period;
-        this.amount = builder.amount;
-        this.useFoodLevel = builder.useFoodLevel;
+    public PlayerRegenerator(final Player player, final ConfigurationHolder configurationHolder) {
+        this.player = player;
+        this.period = configurationHolder.getPeriod();
+        this.amount = configurationHolder.getAmount();
+        this.useFoodLevel = configurationHolder.isUseFoodLevel();
+        this.bonusLevelInterval = configurationHolder.getBonusLevelInterval();
+        this.bonusPerLevelInterval = configurationHolder.getBonusPerLevelInterval();
+        this.replaceMinecraftSystem = configurationHolder.isReplaceMinecraftSystem();
+        this.whitelistedWorlds = configurationHolder.getWhitelistedWorlds();
+        this.blacklistedWorlds = configurationHolder.getBlacklistedWorlds();
     }
 
     private void heal() {
@@ -33,10 +51,11 @@ public class PlayerRegenerator {
         if(player.isDead()) {
             return;
         }
-        final float playerMaxHealth = (float) player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        final float playerCurrentHealth = (float) player.getHealth();
-        final float playerFoodLevel = player.getFoodLevel();
-        float effectiveAmount = this.amount;
+        final double playerMaxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        final double playerCurrentHealth = player.getHealth();
+        final double playerFoodLevel = player.getFoodLevel();
+        //Make sure the effective amount remains positive
+        double effectiveAmount = Math.max(0, this.amount + getHealthBonus());
 
         //Check if player is already at full health
         if(playerCurrentHealth >= playerMaxHealth) {
@@ -46,6 +65,36 @@ public class PlayerRegenerator {
             effectiveAmount *= playerFoodLevel / 20;
         }
         player.setHealth(Math.min(playerCurrentHealth + effectiveAmount, playerMaxHealth));
+    }
+
+    private double getHealthBonus() {
+        if(bonusLevelInterval <= 0 || bonusPerLevelInterval == 0) {
+            return 0;
+        }
+        int multiplier = player.getLevel() / bonusLevelInterval;
+
+        return multiplier * bonusPerLevelInterval;
+    }
+
+    /**
+     * Check whether the player should regenerate health.
+     */
+    private boolean shouldHeal() {
+        final var world = player.getWorld();
+
+        if(!whitelistedWorlds.isEmpty() && !whitelistedWorlds.contains(world.getName())) {
+            return false;
+        }
+        if(blacklistedWorlds.contains(world.getName())) {
+            return false;
+        }
+        //If the plugin doesn't replace the Minecraft regen system -> check if natural regeneration is on
+        //      If natural regen is on -> do not heal the player
+        if(!replaceMinecraftSystem && Boolean.TRUE.equals(world.getGameRuleValue(GameRule.NATURAL_REGENERATION))) {
+            return false;
+        }
+
+        return true;
     }
 
     public void start() {
@@ -58,7 +107,9 @@ public class PlayerRegenerator {
                     cancel();
                     return;
                 }
-                heal();
+                if(shouldHeal()) {
+                    heal();
+                }
             }
         }.runTaskTimer(RPGRegen.getInstance(), 0, (long) period * 20);
     }
@@ -67,51 +118,6 @@ public class PlayerRegenerator {
         if(task != null) {
             task.cancel();
         }
-    }
-
-    public static Builder newBuilder(final Player player) {
-        return new Builder(player);
-    }
-
-    public static class Builder {
-
-        private final Player player;
-
-        private float period = 2;
-
-        private float amount = 1;
-
-        private boolean useFoodLevel = true;
-
-        private Builder(final Player player) {
-            this.player = player;
-        }
-
-        public Builder period(final float period) {
-            this.period = period;
-            return this;
-        }
-
-        public Builder amount(final float amount) {
-            this.amount = amount;
-            return this;
-        }
-
-        public Builder useFoodLevel(final boolean useFoodLevel) {
-            this.useFoodLevel = useFoodLevel;
-            return this;
-        }
-
-        public PlayerRegenerator build() {
-            if(period <= 0) {
-                throw new IllegalArgumentException("The period must be strictly positive");
-            }
-            if(amount < 0) {
-                throw new IllegalArgumentException("The amount must be positive");
-            }
-            return new PlayerRegenerator(this);
-        }
-
     }
 
 }

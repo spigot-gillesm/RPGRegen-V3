@@ -6,3 +6,57 @@ amount: 1.0
 use-food-level: true
 # How much time in seconds a player remains in combat
 combat-duration: 5.0
+# Increase the health regen by 'bonus-per-interval' every 'bonus-level-interval'. E.g. if set to 3, a bonus of
+# health regen will be applied every 3 levels.
+# If left to 0, no bonus will be given regardless the level
+bonus-level-interval: 0
+# How much bonus health regen is given every interval.
+bonus-per-interval: 0.5
+
+#List of all the excluded damage cause. If a damage cause is in this list, it won't put players in combat. The list can be empty
+#https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html for a list of all the damage cause
+excluded-cause:
+  - FALL
+
+#If set to true, the players will only regen health through the plugin's system. No matter the world's
+#natural regeneration gamerule
+replace-minecraft-system: false
+
+#If set to true, the plugin will only work in the world listed below
+per-world-system: false
+
+#If per-world-system is true, RPG Regen will only work in these worlds (even if replace-minecraft-system is true)
+#The world's name must be exactly the same as the world's folder name
+worlds:
+  - world
+  - world_the_end
+  - world_nether
+
+#If set to true, light green particles will spawn on the player when regenerating
+particles: true
+particle-amount: 3
+x-offset: 0.4
+y-offset: 0
+z-offset: 0.4
+
+
+  ################
+  ###############Potion Options########################
+################
+
+#Wether or not drinking/throwing a potion will put players in combat
+is-potion-fighting: false
+
+#If set to true, drinking any potion will put players in combat
+any-potion: false
+
+#List of all the potion effects that would put a player in combat if any-potion is set to false
+#You can find a list of all the potion types here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
+potion-list:
+  - STRENGTH
+
+#If set to true, throwing any splash potion will put players in combat
+is-splash-fighting: true
+
+#If set to true, throwing any lingering potion will put players in combat
+is-lingering-fighting: true

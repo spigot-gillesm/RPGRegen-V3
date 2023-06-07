@@ -32,11 +32,7 @@ public class RegeneratorManager {
                         () -> {
                             final ConfigurationHolder configuration = RPGRegen.getInstance().getConfigurationHolder();
                             //Create the regenerator using the config values
-                            final var regenerator = PlayerRegenerator.newBuilder(player)
-                                    .period(configuration.getPeriod())
-                                    .amount(configuration.getAmount())
-                                    .useFoodLevel(configuration.isUseFoodLevel())
-                                    .build();
+                            final var regenerator = new PlayerRegenerator(player, RPGRegen.getInstance().getConfigurationHolder());
                             regenerator.start();
                             registeredRegenerators.add(regenerator);
                         });
