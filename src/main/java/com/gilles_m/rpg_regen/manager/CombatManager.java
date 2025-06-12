@@ -3,6 +3,7 @@ package com.gilles_m.rpg_regen.manager;
 import com.gilles_m.rpg_regen.CombatChecker;
 import com.gilles_m.rpg_regen.RPGRegen;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,16 +14,14 @@ public class CombatManager {
 
     private final Set<CombatChecker> registeredCombatChecker = new HashSet<>();
 
-    private CombatManager() {
-        //Prevent outside instantiation
-    }
+    private CombatManager() { }
 
     /**
      * Put the player in combat.
      *
      * @param player the player
      */
-    public void startCombat(final Player player) {
+    public void startCombat(@NotNull Player player) {
         getCombatChecker(player).start(RPGRegen.getInstance().getConfigurationHolder().getCombatDuration());
     }
 
@@ -32,7 +31,7 @@ public class CombatManager {
      * @param player the player
      * @return the player's combat checker
      */
-    public CombatChecker getCombatChecker(final Player player) {
+    public CombatChecker getCombatChecker(@NotNull Player player) {
         return registeredCombatChecker.stream()
                 .filter(combatChecker -> combatChecker.getPlayer().equals(player))
                 .findFirst()

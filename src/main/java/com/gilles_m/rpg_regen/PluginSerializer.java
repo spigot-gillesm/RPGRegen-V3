@@ -10,6 +10,8 @@ import java.io.IOException;
 
 public class PluginSerializer {
 
+    protected PluginSerializer() { }
+
     public static class DamageCauseSerializer extends JsonSerializer<EntityDamageEvent.DamageCause> {
 
         @Override

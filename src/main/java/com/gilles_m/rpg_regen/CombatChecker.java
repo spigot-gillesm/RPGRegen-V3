@@ -1,6 +1,5 @@
 package com.gilles_m.rpg_regen;
 
-import com.gilles_m.rpg_regen.event.PlayerEnterCombatEvent;
 import com.gilles_m.rpg_regen.event.PlayerLeaveCombatEvent;
 import lombok.Getter;
 import org.bukkit.Bukkit;

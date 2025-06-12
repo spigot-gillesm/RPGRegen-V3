@@ -15,7 +15,7 @@ public class PluginDeserializer {
 
     public static class DamageCauseDeserializer extends StdDeserializer<EntityDamageEvent.DamageCause> {
 
-        public DamageCauseDeserializer(final Class<?> vc) {
+        public DamageCauseDeserializer(Class<?> vc) {
             super(vc);
         }
 
@@ -24,7 +24,7 @@ public class PluginDeserializer {
         }
 
         @Override
-        public EntityDamageEvent.DamageCause deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
+        public EntityDamageEvent.DamageCause deserialize(JsonParser parser, DeserializationContext context) throws IOException {
             final var data = parser.getText();
 
             try {
@@ -48,7 +48,7 @@ public class PluginDeserializer {
         }
 
         @Override
-        public PotionEffectType deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
+        public PotionEffectType deserialize(JsonParser parser, DeserializationContext context) throws IOException {
             final var data = parser.getText();
 
             try {
