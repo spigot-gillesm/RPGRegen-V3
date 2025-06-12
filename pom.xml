@@ -6,123 +6,57 @@
 
     <groupId>com.gilles_m</groupId>
     <artifactId>rpg-regen</artifactId>
-    <version>3.0.0</version>
-    <packaging>jar</packaging>
+    <version>3.1.0</version>
+    <packaging>pom</packaging>
 
     <name>RPGRegen</name>
 
     <properties>
-        <java.version>15</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main-class>com.gilles_m.rpg_regen.RPGRegen</main-class>
-        <spigot.version>1.19.4-R0.1-SNAPSHOT</spigot.version>
-        <lombok.version>1.18.26</lombok.version>
-        <jackson.version>2.14.2</jackson.version>
-        <format-lib.version>1.0.0</format-lib.version>
-        <file-utils.version>1.0.0</file-utils.version>
-        <command-lib.version>1.0.0</command-lib.version>
+        <lombok.version>1.18.38</lombok.version>
+        <java.version>19</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
+    <modules>
+        <module>rpgregen-dist</module>
+        <module>rpgregen-core</module>
+        <module>rpgregen-v1_17_r1</module>
+        <module>rpgregen-v1_21_R3</module>
+    </modules>
 
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.spigot_gillesm</groupId>
-            <artifactId>format-lib</artifactId>
-            <version>${format-lib.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.spigot_gillesm</groupId>
-            <artifactId>file-utils</artifactId>
-            <version>${file-utils.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.spigot_gillesm</groupId>
-            <artifactId>command-lib</artifactId>
-            <version>${command-lib.version}</version>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
-        <finalName>${project.name}-${project.version}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>module-info.class</exclude>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                                <exclude>META-INF/*.MF</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.14.0</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+
 </project>
