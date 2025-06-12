@@ -15,8 +15,8 @@ public class PluginSerializer {
     public static class DamageCauseSerializer extends JsonSerializer<EntityDamageEvent.DamageCause> {
 
         @Override
-        public void serialize(final EntityDamageEvent.DamageCause damageCause, final JsonGenerator jsonGenerator,
-                              final SerializerProvider serializer) throws IOException {
+        public void serialize(final EntityDamageEvent.DamageCause damageCause, JsonGenerator jsonGenerator,
+                              SerializerProvider serializer) throws IOException {
 
             jsonGenerator.writeString(damageCause.name());
         }
@@ -26,9 +26,7 @@ public class PluginSerializer {
     public static class PotionEffectTypeSerializer extends JsonSerializer<PotionEffectType> {
 
         @Override
-        public void serialize(final PotionEffectType potionEffect, final JsonGenerator jsonGenerator,
-                              final SerializerProvider serializer) throws IOException {
-
+        public void serialize(PotionEffectType potionEffect, JsonGenerator jsonGenerator, SerializerProvider serializer) throws IOException {
             jsonGenerator.writeString(potionEffect.getName());
         }
 
