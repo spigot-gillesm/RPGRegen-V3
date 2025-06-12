@@ -13,17 +13,17 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerListener implements Listener {
 
     @EventHandler
-    protected void onPlayerJoin(final PlayerJoinEvent event) {
+    protected void onPlayerJoin(PlayerJoinEvent event) {
         RegeneratorManager.getInstance().start(event.getPlayer());
     }
 
     @EventHandler
-    protected void onPlayerLeave(final PlayerQuitEvent event) {
+    protected void onPlayerLeave(PlayerQuitEvent event) {
         RegeneratorManager.getInstance().stop(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    protected void onPlayerEnterCombat(final PlayerEnterCombatEvent event) {
+    protected void onPlayerEnterCombat(PlayerEnterCombatEvent event) {
         if(RPGRegen.getInstance().getConfigurationHolder().getExcludedDamageCauses().contains(event.getDamageCause())) {
             event.setCancelled(true);
             return;
@@ -32,7 +32,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    protected void onPlayerLeaveCombat(final PlayerLeaveCombatEvent event) {
+    protected void onPlayerLeaveCombat(PlayerLeaveCombatEvent event) {
         RegeneratorManager.getInstance().start(event.getPlayer());
     }
 

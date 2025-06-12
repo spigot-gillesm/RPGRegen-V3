@@ -23,7 +23,7 @@ public final class RPGRegen extends JavaPlugin {
     @Getter
     private ConfigurationHolder configurationHolder;
 
-    private static void initialise(final RPGRegen pluginInstance) {
+    private static void initialise(RPGRegen pluginInstance) {
         instance = pluginInstance;
         Formatter.PREFIX = "&f[&cRPG&aRegen&f]";
         FileUtils.PLUGIN_DATA_FOLDER_PATH = instance.getDataFolder().getPath();
@@ -51,11 +51,6 @@ public final class RPGRegen extends JavaPlugin {
             Formatter.warning("Using default configuration.");
             this.configurationHolder = new ConfigurationHolder();
         }
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
     }
 
 }

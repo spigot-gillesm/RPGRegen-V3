@@ -24,16 +24,17 @@ import java.util.stream.Collectors;
 public class CombatListener implements Listener {
 
     @EventHandler
-    public void onHit(final EntityDamageByEntityEvent event) {
+    public void onHit(EntityDamageByEntityEvent event) {
+        //this variable will be set to a valid player should they be considered in combat
         Player player = null;
 
         //Check if a player hits an entity
-        if(event.getDamager() instanceof Player) {
-            player = (Player) event.getDamager();
+        if(event.getDamager() instanceof Player damager) {
+            player = damager;
         }
         //Check if a player has been hit by another entity
-        else if(event.getEntity() instanceof Player) {
-            player = (Player) event.getEntity();
+        else if(event.getEntity() instanceof Player entity) {
+            player = entity;
         }
         //Check for projectiles
         if(event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) ||
@@ -42,17 +43,17 @@ public class CombatListener implements Listener {
             final ProjectileSource source = ((Projectile) event.getDamager()).getShooter();
 
             //Check if a player shot an entity
-            if(source instanceof Player) {
-                player = (Player) source;
+            if(source instanceof Player shooter) {
+                player = shooter;
             }
             //Check if the player was shot by another entity
-            else if(event.getEntity() instanceof Player) {
-                player = (Player) event.getEntity();
+            else if(event.getEntity() instanceof Player entity) {
+                player = entity;
             }
         }
         //Check if a player is effectively in combat
         if(player != null) {
-            final PlayerEnterCombatEvent playerEnterCombatEvent = new PlayerEnterCombatEvent(player, event.getCause());
+            final var playerEnterCombatEvent = new PlayerEnterCombatEvent(player, event.getCause());
             Bukkit.getServer().getPluginManager().callEvent(playerEnterCombatEvent);
 
             //If the event has not been cancelled put the player in combat
@@ -63,10 +64,9 @@ public class CombatListener implements Listener {
     }
 
     @EventHandler
-    protected void onDamaged(final EntityDamageEvent event) {
-        if(event.getEntity() instanceof Player) {
-            final Player player = (Player) event.getEntity();
-            final PlayerEnterCombatEvent playerEnterCombatEvent = new PlayerEnterCombatEvent(player, event.getCause());
+    protected void onDamaged(EntityDamageEvent event) {
+        if(event.getEntity() instanceof Player player) {
+            final var playerEnterCombatEvent = new PlayerEnterCombatEvent(player, event.getCause());
             Bukkit.getServer().getPluginManager().callEvent(playerEnterCombatEvent);
 
             //If the event has not been cancelled put the player in combat
@@ -77,7 +77,7 @@ public class CombatListener implements Listener {
     }
 
     @EventHandler
-    protected void onPotionSplash(final PotionSplashEvent event) {
+    protected void onPotionSplash(PotionSplashEvent event) {
         //Check if the intersection of the fighting potion effects with the thrown potion effects is empty
         //If empty -> return
         final Set<PotionEffectType> intersection = event.getPotion().getEffects().stream()
@@ -91,10 +91,8 @@ public class CombatListener implements Listener {
         }
         final ProjectileSource source = event.getEntity().getShooter();
 
-        if(source instanceof Player) {
-            final Player player = (Player) source;
-            final PlayerEnterCombatEvent playerEnterCombatEvent = new PlayerEnterCombatEvent(player,
-                    EntityDamageEvent.DamageCause.MAGIC);
+        if(source instanceof Player player) {
+            final var playerEnterCombatEvent = new PlayerEnterCombatEvent(player, EntityDamageEvent.DamageCause.MAGIC);
             Bukkit.getServer().getPluginManager().callEvent(playerEnterCombatEvent);
 
             //If the event has not been cancelled put the player in combat
@@ -105,7 +103,7 @@ public class CombatListener implements Listener {
     }
 
     @EventHandler
-    protected void onLingeringSplash(final LingeringPotionSplashEvent event) {
+    protected void onLingeringSplash(LingeringPotionSplashEvent event) {
         //Check if the intersection of the fighting potion effects with the thrown potion effects is empty
         //If empty -> return
         final Set<PotionEffectType> intersection = event.getEntity().getEffects().stream()
@@ -119,10 +117,8 @@ public class CombatListener implements Listener {
         }
         final ProjectileSource source = event.getEntity().getShooter();
 
-        if(source instanceof Player) {
-            final Player player = (Player) source;
-            final PlayerEnterCombatEvent playerEnterCombatEvent = new PlayerEnterCombatEvent(player,
-                    EntityDamageEvent.DamageCause.MAGIC);
+        if(source instanceof Player player) {
+            final var playerEnterCombatEvent = new PlayerEnterCombatEvent(player, EntityDamageEvent.DamageCause.MAGIC);
             Bukkit.getServer().getPluginManager().callEvent(playerEnterCombatEvent);
 
             //If the event has not been cancelled put the player in combat
@@ -133,17 +129,15 @@ public class CombatListener implements Listener {
     }
 
     @EventHandler
-    protected void onPlayerConsumeItem(final PlayerItemConsumeEvent event) {
+    protected void onPlayerConsumeItem(PlayerItemConsumeEvent event) {
         final var consumedItem = event.getItem();
 
         if(!consumedItem.hasItemMeta()) {
             return;
         }
-        if(!(consumedItem.getItemMeta() instanceof PotionMeta)) {
+        if(!(consumedItem.getItemMeta() instanceof PotionMeta potionMeta)) {
             return;
         }
-        final var potionMeta = (PotionMeta) consumedItem.getItemMeta();
-
         final Set<PotionEffectType> intersection = potionMeta.getCustomEffects().stream()
                 .map(PotionEffect::getType)
                 //Filter the elements present in the config holder
@@ -154,8 +148,7 @@ public class CombatListener implements Listener {
             return;
         }
         final Player player = event.getPlayer();
-        final PlayerEnterCombatEvent playerEnterCombatEvent = new PlayerEnterCombatEvent(player,
-                EntityDamageEvent.DamageCause.MAGIC);
+        final var playerEnterCombatEvent = new PlayerEnterCombatEvent(player, EntityDamageEvent.DamageCause.MAGIC);
         Bukkit.getServer().getPluginManager().callEvent(playerEnterCombatEvent);
 
         //If the event has not been cancelled put the player in combat

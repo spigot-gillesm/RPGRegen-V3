@@ -48,8 +48,10 @@ public class ConfigurationHolder {
     @JsonProperty("excluded-damage-causes")
     @JsonDeserialize(contentUsing = PluginDeserializer.DamageCauseDeserializer.class)
     @JsonSerialize(contentUsing = PluginSerializer.DamageCauseSerializer.class)
-    private Set<EntityDamageEvent.DamageCause> excludedDamageCauses = Set.of(EntityDamageEvent.DamageCause.FALL,
-            EntityDamageEvent.DamageCause.FALLING_BLOCK);
+    private Set<EntityDamageEvent.DamageCause> excludedDamageCauses = Set.of(
+            EntityDamageEvent.DamageCause.FALL,
+            EntityDamageEvent.DamageCause.FALLING_BLOCK
+    );
 
     @Getter
     @JsonProperty("fighting-potions")
@@ -61,15 +63,21 @@ public class ConfigurationHolder {
     @JsonProperty("splash-fighting-potions")
     @JsonDeserialize(contentUsing = PluginDeserializer.PotionEffectTypeDeserializer.class)
     @JsonSerialize(contentUsing = PluginSerializer.PotionEffectTypeSerializer.class)
-    private Set<PotionEffectType> splashFightingPotions = Set.of(PotionEffectType.HEAL,
-            PotionEffectType.HARM, PotionEffectType.POISON);
+    private Set<PotionEffectType> splashFightingPotions = Set.of(
+            PotionEffectType.INSTANT_HEALTH,
+            PotionEffectType.INSTANT_DAMAGE,
+            PotionEffectType.POISON
+    );
 
     @Getter
     @JsonProperty("lingering-fighting-potions")
     @JsonDeserialize(contentUsing = PluginDeserializer.PotionEffectTypeDeserializer.class)
     @JsonSerialize(contentUsing = PluginSerializer.PotionEffectTypeSerializer.class)
-    private Set<PotionEffectType> lingeringFightingPotions = Set.of(PotionEffectType.HEAL,
-            PotionEffectType.HARM, PotionEffectType.POISON);
+    private Set<PotionEffectType> lingeringFightingPotions = Set.of(
+            PotionEffectType.INSTANT_HEALTH,
+            PotionEffectType.INSTANT_DAMAGE,
+            PotionEffectType.POISON
+    );
 
     @Getter
     @JsonProperty("whitelisted-worlds")

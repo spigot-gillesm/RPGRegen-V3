@@ -4,6 +4,7 @@ import com.gilles_m.rpg_regen.manager.ConfigurationHolder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,7 +35,7 @@ public class PlayerRegenerator {
 
     private BukkitTask task;
 
-    public PlayerRegenerator(final Player player, final ConfigurationHolder configurationHolder) {
+    public PlayerRegenerator(Player player, ConfigurationHolder configurationHolder) {
         this.player = player;
         this.period = configurationHolder.getPeriod();
         this.amount = configurationHolder.getAmount();
@@ -51,7 +52,7 @@ public class PlayerRegenerator {
         if(player.isDead()) {
             return;
         }
-        final double playerMaxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        final double playerMaxHealth = player.getAttribute(Attribute.MAX_HEALTH).getValue();
         final double playerCurrentHealth = player.getHealth();
         final double playerFoodLevel = player.getFoodLevel();
         //Make sure the effective amount remains positive
@@ -71,7 +72,7 @@ public class PlayerRegenerator {
         if(bonusLevelInterval <= 0 || bonusPerLevelInterval == 0) {
             return 0;
         }
-        int multiplier = player.getLevel() / bonusLevelInterval;
+        final int multiplier = player.getLevel() / bonusLevelInterval;
 
         return multiplier * bonusPerLevelInterval;
     }
@@ -80,7 +81,7 @@ public class PlayerRegenerator {
      * Check whether the player should regenerate health.
      */
     private boolean shouldHeal() {
-        final var world = player.getWorld();
+        final World world = player.getWorld();
 
         if(!whitelistedWorlds.isEmpty() && !whitelistedWorlds.contains(world.getName())) {
             return false;
@@ -90,27 +91,26 @@ public class PlayerRegenerator {
         }
         //If the plugin doesn't replace the Minecraft regen system -> check if natural regeneration is on
         //      If natural regen is on -> do not heal the player
-        if(!replaceMinecraftSystem && Boolean.TRUE.equals(world.getGameRuleValue(GameRule.NATURAL_REGENERATION))) {
-            return false;
-        }
-
-        return true;
+        return replaceMinecraftSystem || !Boolean.TRUE.equals(world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
     }
 
     public void start() {
         //Stop any already running runnable
         stop();
         task = new BukkitRunnable() {
+
             @Override
             public void run() {
                 if(player == null || !Bukkit.getServer().getOnlinePlayers().contains(player)) {
                     cancel();
+
                     return;
                 }
                 if(shouldHeal()) {
                     heal();
                 }
             }
+
         }.runTaskTimer(RPGRegen.getInstance(), 0, (long) period * 20);
     }
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerLeaveCombatEvent extends Event {
 
@@ -12,12 +13,11 @@ public class PlayerLeaveCombatEvent extends Event {
     @Getter
     private final Player player;
 
-    public PlayerLeaveCombatEvent(Player player) {
-
+    public PlayerLeaveCombatEvent(@NotNull Player player) {
         this.player = player;
-
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;

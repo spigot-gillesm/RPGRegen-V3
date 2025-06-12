@@ -4,6 +4,7 @@ import com.gilles_m.rpg_regen.PlayerRegenerator;
 import com.gilles_m.rpg_regen.RPGRegen;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -15,22 +16,19 @@ public class RegeneratorManager {
 
     private final Set<PlayerRegenerator> registeredRegenerators = new HashSet<>();
 
-    private RegeneratorManager() {
-        //Prevent outside instantiation
-    }
+    private RegeneratorManager() { }
 
     /**
      * Start the player regenerator of the given player. Creates one if none exist.
      *
      * @param player the player
      */
-    public void start(final Player player) {
+    public void start(@NotNull Player player) {
         getRegenerator(player)
                 //Check if a regenerator already exists for the player before creating one
                 .ifPresentOrElse(
                         PlayerRegenerator::start,
                         () -> {
-                            final ConfigurationHolder configuration = RPGRegen.getInstance().getConfigurationHolder();
                             //Create the regenerator using the config values
                             final var regenerator = new PlayerRegenerator(player, RPGRegen.getInstance().getConfigurationHolder());
                             regenerator.start();
@@ -43,7 +41,7 @@ public class RegeneratorManager {
      *
      * @param player the player
      */
-    public void stop(final Player player) {
+    public void stop(@NotNull Player player) {
         getRegenerator(player).ifPresent(PlayerRegenerator::stop);
     }
 
@@ -67,7 +65,7 @@ public class RegeneratorManager {
      * @param player the player
      * @return an optional of PlayerRegenerator
      */
-    public Optional<PlayerRegenerator> getRegenerator(final Player player) {
+    public Optional<PlayerRegenerator> getRegenerator(@NotNull Player player) {
         return registeredRegenerators.stream()
                 .filter(regenerator -> regenerator.getPlayer().equals(player))
                 .findFirst();

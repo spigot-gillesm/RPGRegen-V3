@@ -23,7 +23,7 @@ class RPGRegenMainCommand extends SimpleCommand {
     }
 
     @Override
-    protected void run(final CommandSender commandSender, final String[] args) {
+    protected void run(CommandSender commandSender, String[] args) {
         if(args.length == 0) {
             displayHelp(commandSender);
         }
@@ -31,7 +31,7 @@ class RPGRegenMainCommand extends SimpleCommand {
 
     private static class ReloadCommand extends SimpleCommand {
 
-        private ReloadCommand(final SimpleCommand parentCommand) {
+        private ReloadCommand(SimpleCommand parentCommand) {
             super(parentCommand, "reload");
 
             setAliases(List.of("rel", "r"));
@@ -41,7 +41,7 @@ class RPGRegenMainCommand extends SimpleCommand {
         }
 
         @Override
-        protected void run(final CommandSender commandSender, final String[] args) {
+        protected void run(CommandSender commandSender, String[] args) {
             if(args.length > 0) {
                 Formatter.tell(commandSender, "&cThis command takes no arguments");
                 return;
