@@ -13,7 +13,7 @@ public class CombatChecker {
 
     private BukkitTask task;
 
-    public CombatChecker(final Player player) {
+    public CombatChecker(Player player) {
         this.player = player;
     }
 

@@ -39,7 +39,7 @@ public class PluginDeserializer {
 
     public static class PotionEffectTypeDeserializer extends StdDeserializer<PotionEffectType> {
 
-        public PotionEffectTypeDeserializer(final Class<?> vc) {
+        public PotionEffectTypeDeserializer(Class<?> vc) {
             super(vc);
         }
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gilles_m.rpg_regen.PluginDeserializer;
 import com.gilles_m.rpg_regen.PluginSerializer;
+import com.gilles_m.rpg_regen.RPGRegen;
 import lombok.Getter;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -64,8 +65,8 @@ public class ConfigurationHolder {
     @JsonDeserialize(contentUsing = PluginDeserializer.PotionEffectTypeDeserializer.class)
     @JsonSerialize(contentUsing = PluginSerializer.PotionEffectTypeSerializer.class)
     private Set<PotionEffectType> splashFightingPotions = Set.of(
-            PotionEffectType.INSTANT_HEALTH,
-            PotionEffectType.INSTANT_DAMAGE,
+            RPGRegen.getInstance().getVersionWrapper().getPotionEffectInstantHealth(),
+            RPGRegen.getInstance().getVersionWrapper().getPotionEffectInstantDamage(),
             PotionEffectType.POISON
     );
 
@@ -74,8 +75,8 @@ public class ConfigurationHolder {
     @JsonDeserialize(contentUsing = PluginDeserializer.PotionEffectTypeDeserializer.class)
     @JsonSerialize(contentUsing = PluginSerializer.PotionEffectTypeSerializer.class)
     private Set<PotionEffectType> lingeringFightingPotions = Set.of(
-            PotionEffectType.INSTANT_HEALTH,
-            PotionEffectType.INSTANT_DAMAGE,
+            RPGRegen.getInstance().getVersionWrapper().getPotionEffectInstantHealth(),
+            RPGRegen.getInstance().getVersionWrapper().getPotionEffectInstantDamage(),
             PotionEffectType.POISON
     );
 

@@ -4,6 +4,8 @@ import com.gilles_m.rpg_regen.listener.CombatListener;
 import com.gilles_m.rpg_regen.listener.PlayerListener;
 import com.gilles_m.rpg_regen.manager.ConfigurationHolder;
 import com.gilles_m.rpg_regen.manager.ConfigurationLoader;
+import com.gilles_m.rpg_regen.version.ServerVersion;
+import com.gilles_m.rpg_regen.version.VersionWrapper;
 import com.github.spigot_gillesm.command_lib.CommandLib;
 import com.github.spigot_gillesm.file_utils.FileUtils;
 import com.github.spigot_gillesm.format_lib.Formatter;
@@ -18,6 +20,8 @@ public final class RPGRegen extends JavaPlugin {
 
     @Getter
     private static RPGRegen instance;
+
+    private ServerVersion serverVersion;
 
     @Setter
     @Getter
@@ -43,6 +47,8 @@ public final class RPGRegen extends JavaPlugin {
     }
 
     public void loadObjects() {
+        this.serverVersion = new ServerVersion();
+
         try {
             ConfigurationLoader.getInstance().load();
         } catch (final IOException exception) {
@@ -51,6 +57,10 @@ public final class RPGRegen extends JavaPlugin {
             Formatter.warning("Using default configuration.");
             this.configurationHolder = new ConfigurationHolder();
         }
+    }
+
+    public VersionWrapper getVersionWrapper() {
+        return serverVersion.getVersionWrapper();
     }
 
 }

@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -52,7 +51,7 @@ public class PlayerRegenerator {
         if(player.isDead()) {
             return;
         }
-        final double playerMaxHealth = player.getAttribute(Attribute.MAX_HEALTH).getValue();
+        final double playerMaxHealth = player.getAttribute(RPGRegen.getInstance().getVersionWrapper().getAttributeMaxHealth()).getValue();
         final double playerCurrentHealth = player.getHealth();
         final double playerFoodLevel = player.getFoodLevel();
         //Make sure the effective amount remains positive
