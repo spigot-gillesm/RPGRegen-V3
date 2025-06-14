@@ -1,7 +1,5 @@
 package com.gilles_m.rpg_regen.version;
 
-import com.gilles_m.rpg_regen.RPGRegen;
-import com.github.spigot_gillesm.format_lib.Formatter;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
@@ -19,7 +17,7 @@ public class ServerVersion {
     @Getter
     private final VersionWrapper versionWrapper;
 
-    public ServerVersion() {
+    public ServerVersion() throws IllegalStateException {
         //Get the version numbers
         final String[] bukkitSplit = Bukkit.getServer().getBukkitVersion().split("-")[0].split("\\."); // ["1", "20", "4"]
         //Stores the integer representing the running bukkit version
@@ -31,8 +29,7 @@ public class ServerVersion {
         this.versionWrapper = WrapperProvider.fetchWrapper(bukkitVersion);
 
         if(versionWrapper == null) {
-            Formatter.error("Disabling RPGRegen");
-            Bukkit.getServer().getPluginManager().disablePlugin(RPGRegen.getInstance());
+            throw new IllegalStateException("Null version wrapper");
         }
     }
 

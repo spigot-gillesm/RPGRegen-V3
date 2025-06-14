@@ -1,12 +1,13 @@
 package com.gilles_m.rpg_regen.version;
 
-import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-public class VersionWrapper_1_17_R1 implements VersionWrapper {
+public class VersionWrapper_1_12_R3 implements VersionWrapper {
+
+    private static final String NATURAL_REGENERATION_GAMERULE_KEY = "naturalRegeneration";
 
     @Override
     public Attribute getAttributeMaxHealth() {
@@ -25,7 +26,7 @@ public class VersionWrapper_1_17_R1 implements VersionWrapper {
 
     @Override
     public boolean getNaturalGenerationGameRule(@NotNull World world) {
-        return Boolean.TRUE.equals(world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
+        return "true".equals(world.getGameRuleValue(NATURAL_REGENERATION_GAMERULE_KEY));
     }
 
 }
