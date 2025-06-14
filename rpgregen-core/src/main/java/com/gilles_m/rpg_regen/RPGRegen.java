@@ -51,7 +51,7 @@ public final class RPGRegen extends JavaPlugin {
 
         try {
             ConfigurationLoader.getInstance().load();
-        } catch (final IOException exception) {
+        } catch(IOException exception) {
             Formatter.error(exception.getMessage());
             Formatter.warning("Could not load configurations from the config.yml file. Does the file exist in the plugin folder?");
             Formatter.warning("Using default configuration.");

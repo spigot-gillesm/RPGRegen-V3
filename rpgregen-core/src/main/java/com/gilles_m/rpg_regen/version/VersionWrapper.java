@@ -1,7 +1,9 @@
 package com.gilles_m.rpg_regen.version;
 
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An interface abstracting version specific API calls.
@@ -28,5 +30,13 @@ public interface VersionWrapper {
      * @return an instance of PotionEffectType
      */
     PotionEffectType getPotionEffectInstantDamage();
+
+    /**
+     * get the naturalRegeneration game rule from the given world.
+     *
+     * @param world the world from which to get the game rule's value
+     * @return true if the game rule is set to true, false otherwise
+     */
+    boolean getNaturalGenerationGameRule(@NotNull World world);
 
 }

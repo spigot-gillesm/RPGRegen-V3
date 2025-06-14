@@ -9,7 +9,9 @@ public enum WrapperProvider {
 
     V_1_21_4("VersionWrapper_1_21_R3", 1, 21, 4),
 
-    V_1_17("VersionWrapper_1_17_R1", 1, 17);
+    V_1_17("VersionWrapper_1_17_R1", 1, 17),
+
+    V_1_12("VersionWrapper_1_12_R3", 1, 12);
 
     private static final String CLASS_PATH = "com.gilles_m.rpg_regen.version.";
 
@@ -58,21 +60,29 @@ public enum WrapperProvider {
      * @return an implementation of VersionWrapper
      */
     public static VersionWrapper fetchWrapper(final int[] bukkitVersion) {
+        String path = null;
+
         for(final WrapperProvider provider : WrapperProvider.values()) {
             if(provider.isVersionAbove(bukkitVersion)) {
-                final String path = CLASS_PATH + provider.wrapperClass;
-
-                try {
-                    return (VersionWrapper) Class.forName(path).getDeclaredConstructor().newInstance();
-                } catch(ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException
-                        | NoSuchMethodException exception) {
-
-                    Formatter.error(String.format("Unable to instantiate version wrapper for version %s", Arrays.toString(bukkitVersion)));
-                    Formatter.error(exception.getMessage());
-                }
+                path = CLASS_PATH + provider.wrapperClass;
             }
         }
-        Formatter.error(String.format("No version wrapper for version %s", Arrays.toString(bukkitVersion)));
+        try {
+            //Default to the oldest version wrapper available
+            if(path == null) {
+                final String wrapperClass = WrapperProvider.values()[WrapperProvider.values().length-1].wrapperClass;
+                path = CLASS_PATH + wrapperClass;
+                Formatter.warning(String.format("No version wrapper for version %s. Defaulting to %s",
+                        Arrays.toString(bukkitVersion), wrapperClass));
+            }
+
+            return (VersionWrapper) Class.forName(path).getDeclaredConstructor().newInstance();
+        } catch(ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException
+                | NoSuchMethodException exception) {
+
+            Formatter.error(String.format("Unable to instantiate version wrapper for version %s", Arrays.toString(bukkitVersion)));
+            Formatter.error(exception.getMessage());
+        }
 
         return null;
     }
