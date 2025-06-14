@@ -7,13 +7,14 @@
     <parent>
         <groupId>com.gilles_m</groupId>
         <artifactId>rpg-regen</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
     </parent>
 
     <properties>
         <main-class>com.gilles_m.rpg_regen.RPGRegen</main-class>
         <spigot.version>1.20.5-R0.1-SNAPSHOT</spigot.version>
         <jackson.version>2.19.0</jackson.version>
+        <snakeyaml.version>2.4</snakeyaml.version>
         <format-lib.version>1.0.0</format-lib.version>
         <file-utils.version>1.0.0</file-utils.version>
         <command-lib.version>1.0.0</command-lib.version>
@@ -44,6 +45,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
         </dependency>
 
         <dependency>

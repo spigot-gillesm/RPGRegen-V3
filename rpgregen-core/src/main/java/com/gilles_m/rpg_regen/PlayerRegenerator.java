@@ -90,7 +90,7 @@ public class PlayerRegenerator {
         }
         //If the plugin doesn't replace the Minecraft regen system -> check if natural regeneration is on
         //      If natural regen is on -> do not heal the player
-        return replaceMinecraftSystem || !Boolean.TRUE.equals(world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
+        return replaceMinecraftSystem || !RPGRegen.getInstance().getVersionWrapper().getNaturalGenerationGameRule(world);
     }
 
     public void start() {
